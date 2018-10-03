@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "functions.h"
+
 void get_dimensions(char* buffer, int* i_width, int* i_height){
   long i = 0;
   int size_w = 0;
@@ -38,8 +40,7 @@ void get_dimensions(char* buffer, int* i_width, int* i_height){
   *i_height = atoi(height);
 }
 
-
-int main(int argc, char** argv){
+void read_files(argv){
   //verifier 1 argument et bien un fichier
 
   char* buffer = 0;
@@ -57,6 +58,7 @@ int main(int argc, char** argv){
     }
     fclose (f);
   }
+
   if(buffer){
     int i_width;
     int i_height;
@@ -72,6 +74,4 @@ int main(int argc, char** argv){
         printf("*****");
       }
     }*/
-  }
-  return 0;
 }
