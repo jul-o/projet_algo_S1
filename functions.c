@@ -1,77 +1,46 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <stdbool.h>
+#include <string.h>
 #include "functions.h"
 
-void get_dimensions(char* buffer, int* i_width, int* i_height){
-  long i = 0;
-  int size_w = 0;
-  int size_h = 0;
-  while(buffer[i] != ' '){
-    size_w++;
-    i++;
-  }
-  i++;
-  while(buffer[i] != '\n'){
-    size_h++;
-    i++;
+#define MAX_SIZE_LINE 200
+
+void loadTiling(char * filePath){
+  // Open the file
+  FILE * f;
+  f = fopen(filePath, "r");
+
+  if(f==NULL){
+    printf("Error reading file %s", filePath);
+    return;
   }
 
-  char* width = malloc(size_w);
-  char* height = malloc(size_h);
-  i = 0;
-  long j = 0;
-  while(buffer[i] != ' '){
-    width[j] = buffer[i];
-    i++;
-    j++;
-  }
-  width[j] = '\0';
-  i++;
-  j = 0;
-  while(buffer[i] != '\n'){
-    height[j] = buffer[i];
-    i++;
-    j++;
-  }
-  height[j] = '\0';
+  // The first lines are the tiling size
+  // The temp is there to read all lines to simplify code later (temp value should be null)
+  int lines, columns;
+  char * temp;
+  fscanf(f, "%d %d %s", &lines, &columns, temp);
 
-  *i_width = atoi(width);
-  *i_height = atoi(height);
-}
+  bool tiling [lines][columns];
+  // memset(tiling, false, sizeof(tiling[0][0]) * lines * columns); Not usefule to have a default value ?
 
-void read_files(argv){
-  //verifier 1 argument et bien un fichier
-
-  char* buffer = 0;
-  long length;
-  char* filename = argv[1];
-  FILE* f = fopen(filename, "r");
-  if(f){
-    fseek(f, 0, SEEK_END);
-    length = ftell (f);
-    fseek (f, 0, SEEK_SET);
-    buffer = malloc (length);
-    if (buffer)
-    {
-      fread (buffer, 1, length, f);
+  char buffer[MAX_SIZE_LINE] = "";
+  int current;
+  int currentLine=0;
+  int currentColumn=0;
+  int i;
+  while(fgets(buffer, MAX_SIZE_LINE, f) != NULL){
+    currentColumn=0;
+    for(i=0; i < strlen(buffer)-1; i++){
+      current = buffer[i] - '0'; // Simple trick to convert the char to int
+      tiling[currentLine][currentColumn] = current;
+      currentColumn++;
     }
-    fclose (f);
+    currentLine++;
   }
 
-  if(buffer){
-    int i_width;
-    int i_height;
-    get_dimensions(buffer, &i_width, &i_height);
-
-    printf("%i, %i", i_width, i_height);
-
-
-
-    /*for(long i=0;i<length;i++){
-      printf("%c", buffer[i]);
-      if(buffer[i] == '\n'){
-        printf("*****");
-      }
-    }*/
+  fclose(f);
 }
+
+// void displayTiling(bool **, )
