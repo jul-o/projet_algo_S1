@@ -1,3 +1,5 @@
+#ifndef FUNCTIONS
+#define FUNCTIONS
 #include <stdbool.h>
 
 struct tiling{
@@ -8,3 +10,5 @@ struct tiling{
 
 void get_dimensions(char* buffer, int* i_width, int* i_height);
 struct tiling* loadTiling(char * filePath);
+
+#endif

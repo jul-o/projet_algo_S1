@@ -14,15 +14,15 @@ void get_dimensions(char* l, int* lines, int* cols){
   for(; l[i] != ' '; i++){
     if(!isdigit(l[i])){
       //verification qu'on a bien un chiffre
-      printf("[ERREUR] : le nombre de lignes doit être uniquement composé de chiffres");
+      printf("[ERREUR] : le nombre de lignes doit être uniquement composé de chiffres : %d", l[i]);
       return;
     }
     nb_char_lines++;
   }i++;
-  for(; l[i] != '\0'; i++){
+  for(; l[i] != '\0' && l[i] != '\n'; i++){
     if(!isdigit(l[i])){
       //verification qu'on a bien un chiffre
-      printf("[ERREUR] : le nombre de colonnes doit être uniquement composé de chiffres");
+      printf("[ERREUR] : le nombre de colonnes doit être uniquement composé de chiffres : %d", l[i]);
       return;
     }
     nb_char_cols++;
@@ -64,11 +64,11 @@ struct tiling* loadTiling(char * filePath){
   // fscanf(f, "%d %d %s", &lines, &columns, temp);
 
   if(lines <= 0){
-    printf("le nombre de lignes doit être supérieur à 0 \n");
+    printf("[ERREUR] : le nombre de lignes doit être supérieur à 0 \n");
     return NULL;
   }
   if(columns <= 0){
-    printf("le nombre de colonnes doit être supérieur à 0 %d\n", columns);
+    printf("[ERREUR] : le nombre de colonnes doit être supérieur à 0 %d\n", columns);
     return NULL;
   }
 
@@ -87,13 +87,17 @@ struct tiling* loadTiling(char * filePath){
   while(fgets(buffer, MAX_SIZE_LINE, f) != NULL){
     currentColumn=0;
     for(i=0; i < strlen(buffer)-1; i++){
+      if(buffer[i] != '0' && buffer[i] != '1'){
+        printf("[ERREUR] : le dallage ne doit être composé que de '0' et de '1'\n");
+        return NULL;
+      }
       current = buffer[i] - '0'; // Simple trick to convert the char to int
       tiling[currentLine][currentColumn] = current;
       currentColumn++;
     }
     //vérification de la taille de la ligne
     if(currentColumn != columns){
-      printf("Erreur : ligne de mauvaise taille (ligne %d)", currentLine);
+      printf("[ERREUR] : ligne de mauvaise taille (ligne %d)", currentLine);
       return NULL;
     }
     currentLine++;
