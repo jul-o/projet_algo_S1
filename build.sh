@@ -1,1 +1,1 @@
-gcc *.c -o main.o
+gcc *.c -o main -Wall -std=c99
