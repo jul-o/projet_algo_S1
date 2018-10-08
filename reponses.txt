@@ -2,6 +2,6 @@ Question 1
   Cas d'erreur :
     - fichier vide  CHECK
     - colonne/ligne trop grande/petite  CHECK
-    - nombre de colonnes/lignes négatif
+    - nombre de colonnes/lignes négatif CHECK
     - caractères non numériques
     - autres chiffres que des 'O' ou '1' sur les lignes autres que la première

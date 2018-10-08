@@ -1,9 +1,46 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "functions.h"
 
 #define MAX_SIZE_LINE 200
+
+void get_dimensions(char* l, int* lines, int* cols){
+  int nb_char_lines = 0;
+  int nb_char_cols = 0;
+  int i = 0;
+  for(; l[i] != ' '; i++){
+    if(!isdigit(l[i])){
+      //verification qu'on a bien un chiffre
+      printf("[ERREUR] : le nombre de lignes doit être uniquement composé de chiffres");
+      return;
+    }
+    nb_char_lines++;
+  }i++;
+  for(; l[i] != '\0'; i++){
+    if(!isdigit(l[i])){
+      //verification qu'on a bien un chiffre
+      printf("[ERREUR] : le nombre de colonnes doit être uniquement composé de chiffres");
+      return;
+    }
+    nb_char_cols++;
+  }
+  i = 0;
+  char* str_lines = malloc(nb_char_lines+1);
+  char* str_cols = malloc(nb_char_cols+1);
+  for(; l[i] != ' '; i++){
+    str_lines[i] = l[i];
+  }
+  i++;
+  int j=0;
+  for(; l[i] != '\0'; i++){
+    str_cols[j++] = l[i];
+  }
+  *lines = atoi(str_lines);
+  *cols = atoi(str_cols);
+}
 
 struct tiling* loadTiling(char * filePath){
   // Open the file
@@ -20,7 +57,11 @@ struct tiling* loadTiling(char * filePath){
   int lines, columns;
   char * temp = NULL;
   // TODO : utiliser une autre méthode pour interdire les mauvais caractères
-  fscanf(f, "%d %d %s", &lines, &columns, temp);
+  char* line0 = NULL;
+  size_t len=0;
+  getline(&line0, &len, f);
+  get_dimensions(line0, &lines, &columns);
+  // fscanf(f, "%d %d %s", &lines, &columns, temp);
 
   if(lines <= 0){
     printf("le nombre de lignes doit être supérieur à 0 \n");
