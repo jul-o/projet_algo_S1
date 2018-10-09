@@ -49,7 +49,7 @@ struct tiling* loadTiling(char * filePath){
 
   if(f==NULL){
     printf("Error reading file %s", filePath);
-    return NULL;
+    exit(EXIT_FAILURE);
   }
 
   // The first lines are the tiling size
@@ -65,11 +65,11 @@ struct tiling* loadTiling(char * filePath){
 
   if(lines <= 0){
     printf("[ERREUR] : le nombre de lignes doit être supérieur à 0 \n");
-    return NULL;
+    exit(EXIT_FAILURE);
   }
   if(columns <= 0){
     printf("[ERREUR] : le nombre de colonnes doit être supérieur à 0 %d\n", columns);
-    return NULL;
+    exit(EXIT_FAILURE);
   }
 
   // bool tiling [lines][columns];
@@ -89,7 +89,7 @@ struct tiling* loadTiling(char * filePath){
     for(i=0; i < strlen(buffer)-1; i++){
       if(buffer[i] != '0' && buffer[i] != '1'){
         printf("[ERREUR] : le dallage ne doit être composé que de '0' et de '1'\n");
-        return NULL;
+        exit(EXIT_FAILURE);
       }
       current = buffer[i] - '0'; // Simple trick to convert the char to int
       tiling[currentLine][currentColumn] = current;
@@ -98,7 +98,7 @@ struct tiling* loadTiling(char * filePath){
     //vérification de la taille de la ligne
     if(currentColumn != columns){
       printf("[ERREUR] : ligne de mauvaise taille (ligne %d)", currentLine);
-      return NULL;
+      exit(EXIT_FAILURE);
     }
     currentLine++;
   }
@@ -112,5 +112,3 @@ struct tiling* loadTiling(char * filePath){
   fclose(f);
   return res;
 }
-
-// void displayTiling(bool **, )
