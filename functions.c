@@ -55,7 +55,6 @@ struct tiling* loadTiling(char * filePath){
   // The first lines are the tiling size
   // The temp is there to read all lines to simplify code later (temp value should be null)
   int lines, columns;
-  char * temp = NULL;
   // TODO : utiliser une autre méthode pour interdire les mauvais caractères
   char* line0 = NULL;
   size_t len=0;
@@ -111,4 +110,14 @@ struct tiling* loadTiling(char * filePath){
 
   fclose(f);
   return res;
+}
+
+void displayTiling(Tiling * t){
+  for(int i=0; i<t->lines; i++){
+    for(int j=0; j<t->columns; j++){
+      if(t->values[i][j] == 0) printf("0");
+      if(t->values[i][j] == 1) printf("1");
+    }
+    printf("\n");
+  }
 }
