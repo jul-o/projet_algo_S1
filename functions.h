@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 struct tiling{
     int lines;
     int columns;
