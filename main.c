@@ -8,5 +8,6 @@ int main(int argc, char** argv){
   char * path = "ressources/45-1";
   struct tiling* tiles = loadTiling(path);
   solution_1(tiles);
+  displayTiling(tiles);
   return 0;
 }

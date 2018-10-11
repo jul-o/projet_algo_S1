@@ -2,13 +2,15 @@
 #define FUNCTIONS
 #include <stdbool.h>
 
-struct tiling{
+typedef struct tiling{
     int lines;
     int columns;
     bool ** values;
-};
+} Tiling;
 
 void get_dimensions(char* buffer, int* i_width, int* i_height);
-struct tiling* loadTiling(char * filePath);
+void displayTiling();
+
+Tiling* loadTiling(char * filePath);
 
 #endif

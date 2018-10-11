@@ -4,5 +4,5 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void solution_1(struct tiling* tiles);
+void solution_1(Tiling * tiles);
 #endif
