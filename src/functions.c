@@ -70,7 +70,7 @@ struct tiling* loadTiling(char * filePath){
     exit(EXIT_FAILURE);
   }
 
-  bool** tiling = malloc(sizeof(int*)*columns);
+  int** tiling = malloc(sizeof(int*)*columns);
   for(int i = 0; i < columns; i++) tiling[i] = malloc(sizeof(int)*lines);
   
   char buffer[MAX_SIZE_LINE] = "";
