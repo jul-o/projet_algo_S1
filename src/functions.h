@@ -1,11 +1,10 @@
 #ifndef FUNCTIONS
 #define FUNCTIONS
-#include <stdbool.h>
 
 typedef struct tiling{
     int lines;
     int columns;
-    bool ** values;
+    int ** values;
 } Tiling;
 
 void get_dimensions(char* buffer, int* i_width, int* i_height);
