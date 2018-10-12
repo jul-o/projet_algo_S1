@@ -53,7 +53,6 @@ struct tiling* loadTiling(char * filePath){
   }
 
   // The first lines are the tiling size
-  // The temp is there to read all lines to simplify code later (temp value should be null)
   int lines, columns;
   // TODO : utiliser une autre méthode pour interdire les mauvais caractères
   char* line0 = NULL;
@@ -71,13 +70,9 @@ struct tiling* loadTiling(char * filePath){
     exit(EXIT_FAILURE);
   }
 
-  // bool tiling [lines][columns];
   bool** tiling = malloc(sizeof(int*)*columns);
-  for(int i = 0; i < columns; i++){
-    tiling[i] = malloc(sizeof(int)*lines);
-  }
-  // memset(tiling, false, sizeof(tiling[0][0]) * lines * columns); Not useful to have a default value ?
-
+  for(int i = 0; i < columns; i++) tiling[i] = malloc(sizeof(int)*lines);
+  
   char buffer[MAX_SIZE_LINE] = "";
   int current;
   int currentLine=0;

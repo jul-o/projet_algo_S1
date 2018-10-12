@@ -9,5 +9,9 @@ int main(int argc, char** argv){
   struct tiling* tiles = loadTiling(path);
   solution_1(tiles);
   displayTiling(tiles);
+
+  // For debuging purpose
+  printf("Press ENTER key to Continue\n");  
+  getchar(); 
   return 0;
 }
