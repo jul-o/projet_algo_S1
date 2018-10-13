@@ -96,6 +96,10 @@ struct tiling* loadTiling(char * filePath){
     }
     currentLine++;
   }
+  if(currentLine < lines){
+    printf("Nombre de lignes incorrect\n");
+    exit(EXIT_FAILURE);
+  }
 
   struct tiling* res = malloc(sizeof(tiling));
   res->lines = lines;

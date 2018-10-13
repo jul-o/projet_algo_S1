@@ -14,9 +14,10 @@ void solution_1(Tiling * tiles){
           bool blanc = true;
           for(int ix = x0; ix <= x1 && blanc; ix++){
             for(int iy = y0; iy <= y1 && blanc; iy++){
-              if(tiles->values[ix][iy] == true){
+              if(tiles->values[iy][ix] == 1){
                 blanc = false;
               }
+                // printf("Case et valeur : %i:%i %i\n", ix, iy, tiles->values[ix][iy]);
             }
           }
 
