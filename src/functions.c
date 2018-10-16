@@ -18,32 +18,47 @@ struct tiling* loadTiling(char * filePath){
   readTilingDimensions(f, &lines, &columns);
 
   // Then create the tiling
-  int** tiling = malloc(sizeof(int*)*columns);
-  for(int i = 0; i < columns; i++) tiling[i] = malloc(sizeof(int)*lines);
-  
+  int ** tiling = malloc(lines * sizeof(int*));
+  for(int i = 0; i < lines; i++){
+    tiling[i] = malloc(columns * sizeof(int));
+  }
+
   // Finaly read the file and fill the tiling
-  char buffer[MAX_SIZE_LINE] = "";
+  char buffer[MAX_SIZE_LINE];
   int current;
-  int currentLine=0;
-  int currentColumn=0;
-  int i;
+  int lineCounter=0;
+  int columnCounter=0;
   while(fgets(buffer, MAX_SIZE_LINE, f) != NULL){
-    currentColumn=0;
-    for(i=0; i < strlen(buffer)-1; i++){
+    // Check lines sizes (max)
+    if(lineCounter >= lines){
+      printf("loadTiling ERROR : Too much lines in the files \n"); 
+      return NULL;
+    }
+
+    columnCounter=0;
+    for(int i=0; i < strlen(buffer)-1; i++){
       if(buffer[i] != '0' && buffer[i] != '1'){
-        printf("[ERREUR] : le dallage ne doit être composé que de '0' et de '1'\n");
+        printf("loadTiling ERROR : unexpected character in file (should be only 0 and 1) \n");
         return NULL;
       }
       current = buffer[i] - '0'; // Simple trick to convert the char to int
-      tiling[currentLine][currentColumn] = current;
-      currentColumn++;
+      tiling[lineCounter][columnCounter] = current;
+      columnCounter++;
     }
-    // Checking lines size while reading
-    if(currentColumn != columns){
-      printf("[ERREUR] : ligne de mauvaise taille (ligne %d)", currentLine);
+
+    // Checking column size (min+max)
+    if(columnCounter != columns){
+      printf("loadTiling ERROR : bad column size for line : %d \n", lineCounter);
       return NULL;
     }
-    currentLine++;
+
+    lineCounter++;
+  }
+
+  // Check lines sizes (min)
+  if(lineCounter != lines){
+    printf("loadTiling ERROR : Not enough lines \n");
+    return  NULL;
   }
 
   fclose(f);
@@ -71,7 +86,8 @@ void displayTiling(Tiling * t){
   for(int i=0; i<t->lines; i++){
     for(int j=0; j<t->columns; j++){
       if(t->values[i][j] == 0) printf("0");
-      if(t->values[i][j] == 1) printf("1");
+      else if(t->values[i][j] == 1) printf("1");
+      else printf("X");
     }
     printf("\n");
   }

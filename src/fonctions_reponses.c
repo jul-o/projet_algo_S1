@@ -5,15 +5,15 @@ void solution1(Tiling * tiles){
   int maxWidth = 0;
   int maxHeight = 0;
 
-  for(int y0 = 0; y0 < tiles->lines; y0++){
-    for(int x0 = 0; x0 < tiles->columns; x0++){
+  for(int y0 = 0; y0 <= tiles->lines; y0++){
+    for(int x0 = 0; x0 <= tiles->columns; x0++){
       for(int y1 = y0; y1 < tiles->lines; y1++){
         for(int x1 = x0; x1 < tiles->columns; x1++){
 
           int blanc = 1;
           for(int ix = x0; ix <= x1 && blanc; ix++){
             for(int iy = y0; iy <= y1 && blanc; iy++){
-              if(tiles->values[ix][iy] == 1){
+              if(tiles->values[iy][ix] == 1){
                 blanc = 0;
               }
             }
@@ -41,21 +41,59 @@ void solution1(Tiling * tiles){
 // (Info en plus du sujet)
 // On parcours chaque case du dallage
 // Pour chaque case du dallage, on regarde tous les plus grand rectangles qu'on puisse faire en utilisant la case de dallage actuel comme coin supérieur gauche
-// Dès qu'on réduit la largeur on se rapelle du dernier coin, qui pourra servir comme coin inférieur droit
-// A la fin on compare la surface qu'on obtient avec tous les coins inférieurs droits, et celui qui permet la plus grande surface
-// void solution2(Tiling * tiles){
+// Dès qu'on a trouver la largeur max, on se rapelle de ce point, il pourra servir comme coint inférieur droit
+// A la fin on compare la surface qu'on obtient avec tous les coins inférieurs droits, et on garde celui qui permet la plus grande surface
+void solution2(Tiling * tiles){
 
-//   // x0, y0 : top left corner
-//   for(int x0=0; x0 < tiles->lines; x0++){
-//     for(int y0=0; y0 < tiles->columns; y0++){
+  // x0, y0 : top left corner
+  int max = 0;
+  int x0_max=0, y0_max=0;
+  int x1_max=0, y1_max=0;
 
-//       // x1, y1 : current bottom right corner
-//       int x1 = x0;
-//       int y1 = y1;
+  for(int x0=0; x0 < 1; x0++){
+    for(int y0=0; y0 < 1; y0++){
 
-//       while(tiles->values[x1][y1] != true && x1 < tiles->lines - 1) x1++;
-//       printf("%d \n", &x1);
-//     }
-//   }
-// }
+      // x1, y1 : current bottom right corner position
+      int x1 = x0;
+      int y1 = y0;
+
+      int x_found[50]; // TODO : find better than 50
+      int y_found[50];
+      int nb_found=0;
+
+      int max_x =  tiles->columns-1;
+
+      // TODO : fix inversion cols/rows
+      while(y1 < tiles->lines && tiles->values[x1][y1] != 1){
+        while(x1 < tiles->columns  && tiles->values[x1][y1] != 1 && x1 < max_x) x1++;
+        if(tiles->values[x1][y1] == 1) x1--; // If the last one was a 1, don't count it
+        x_found[nb_found] = x1;
+        y_found[nb_found] = y1;
+        nb_found++;
+        
+        max_x = x1;
+
+        y1++;
+        x1=x0;
+      }
+
+
+      int v;
+      for(int i=0; i < nb_found; i++){
+        v = abs(x_found[i] - x0 + 1) * abs(y_found[i] - y0 + 1);
+        if(v > max){  
+          max = v;
+          x0_max = x0;
+          y0_max = y0;
+          x1_max = x_found[i];
+          y1_max = y_found[i];
+        }
+      }
+    }
+  }
+
+  printf("MAX FOUND : \n");
+  printf("x0 : %d , y0 : %d     xm : %d , ym : %d \n", x0_max, y0_max, x1_max, y1_max);
+  printf("SIZE : %d \n", max);
+}
 
