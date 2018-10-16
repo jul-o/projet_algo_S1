@@ -1,5 +1,9 @@
 #ifndef FUNCTIONS
 #define FUNCTIONS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 typedef struct tiling{
     int lines;
@@ -7,7 +11,7 @@ typedef struct tiling{
     int ** values;
 } Tiling;
 
-void get_dimensions(char* buffer, int* i_width, int* i_height);
+void readTilingDimensions(FILE * f, int * rows, int * columns);
 void displayTiling();
 
 Tiling* loadTiling(char * filePath);
