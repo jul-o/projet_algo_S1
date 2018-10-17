@@ -39,7 +39,7 @@ void readTilingDimensions(FILE * f, int * lines, int * columns){
   int readed = sscanf(line, "%d %d", lines, columns);
   if(readed < 2){
     printf("Error : The dimensions in the file are incorrect.");
-    exit(1);
+    return;
   }
 }
 
