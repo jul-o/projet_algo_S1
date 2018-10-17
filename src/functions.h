@@ -12,6 +12,8 @@ typedef struct tiling{
 } Tiling;
 
 void readTilingDimensions(FILE * f, int * rows, int * columns);
+void readTiling(FILE * f, int * lines, int * columns, int ** tiling);
+
 void displayTiling();
 
 Tiling* loadTiling(char * filePath);
