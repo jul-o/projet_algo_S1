@@ -39,8 +39,8 @@ void solution1(Tiling * tiles){
 // (Info en plus du sujet)
 // On parcours chaque case du dallage
 // Pour chaque case du dallage, on regarde tous les plus grand rectangles qu'on puisse faire en utilisant la case de dallage actuel comme coin supérieur gauche
-// Dès qu'on a trouver la largeur max, on se rapelle de ce point, il pourra servir comme coint inférieur droit
-// A la fin on compare la surface qu'on obtient avec tous les coins inférieurs droits, et on garde celui qui permet la plus grande surface
+// Dès qu'on a trouver la largeur max, on regarde la taille du rectangle en utilisant le coin inférieur droit trouvé
+// Si sa surface est plus grande que tous ceux trouvé auparavant, on le retient comme candidat
 void solution2(Tiling * tiles){
   // x0, y0 : top left corner
   int max = 0;
@@ -68,7 +68,7 @@ void solution2(Tiling * tiles){
           x1_max = x1;
           y1_max = y1;
         }
-        
+
         max_x = x1;
 
         y1++;
