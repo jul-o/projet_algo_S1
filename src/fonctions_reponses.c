@@ -97,3 +97,61 @@ void solution2(Tiling * tiles){
   printf("SIZE : %d \n", max);
 }
 
+void solution3(Tiling *tiles)
+{
+  int x0 = 0;
+  int x1 = 0;
+  int y0 = 0;
+  int y1 = 0;
+  int hauteurs[tiles->columns];
+  int max_size = 0;
+  for (int i = 0; i < tiles->lines; i++)
+  {
+    for (int j = 0; j < tiles->columns; j++)
+    {
+      // initialisation des hauteurs à 0
+      if (i == 0)
+        hauteurs[j] = 0;
+
+      int val = tiles->values[i][j];
+      if (val == 0)
+        hauteurs[j]++;
+      else
+        hauteurs[j] = 0;
+      int h = hauteurs[j];
+      printf("%i", h);
+      // évaluation du plus grand rectangle de bord bas i
+      
+      printf("\n");
+    }
+    for (int l = 0; l < tiles->columns; l++)
+      {
+        int width = 1;
+        if (tiles->values[i][l] == 0)
+        {
+          for (int k = l + 1; k < tiles->columns; k++)
+          {
+            if (hauteurs[k] >= hauteurs[l])
+            {
+              width++;
+            }
+            else break;
+          }
+          for (int k = l - 1; k >= 0; k--)
+          {
+            if (hauteurs[k] >= hauteurs[l])
+            {
+              width++;
+            }
+            else break;
+          }
+          printf("WEED : %i, val : %i, size : %i\n", width, hauteurs[l], width * hauteurs[l]);
+          if (width * hauteurs[l] > max_size)
+          {
+            max_size = width * hauteurs[l];
+          }
+        }
+      }
+  }
+  printf("TAILLE : %i\n", max_size);
+}
