@@ -1,15 +1,16 @@
 #include "stack.h"
 
+// Defining struct here for encapsulation
+struct node_s{
+    int v;
+    struct node_s * next;
+};
+
 Node * createStack(){
     return NULL;
 }
 
-// Pré-conditions : stack not empty
 void pushStack(Node ** stack, int v){
-    if(*stack == NULL){
-        printf("pushStack ERROR : cannot push on an empty stack");
-    }
-
     Node * newNode = malloc(sizeof(Node));
     newNode->v = v;
     newNode->next = *stack;

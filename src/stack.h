@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node_s{
-    int v;
-    struct node_s * next;
-} Node;
+typedef struct node_s Node;
 
 Node * createStack();
 void pushStack(Node ** stack, int v);
