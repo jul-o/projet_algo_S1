@@ -1,38 +1,46 @@
 #include "fonctions_reponses.h"
 
 void solution1(Tiling * tiles){
-  
-  int maxWidth = 0;
-  int maxHeight = 0;
+  int max = 0;
+  int x0_max=0, y0_max=0;
+  int x1_max=0, y1_max=0;
 
-  for(int y0 = 0; y0 <= tiles->lines; y0++){
-    for(int x0 = 0; x0 <= tiles->columns; x0++){
+  int noBlackFound;
+
+  // x0, y0 is the top left corner
+  for(int y0 = 0; y0 < tiles->lines; y0++){
+    for(int x0 = 0; x0 < tiles->columns; x0++){
+      // x1, y1 are the max values that the reactangle can take
       for(int y1 = y0; y1 < tiles->lines; y1++){
         for(int x1 = x0; x1 < tiles->columns; x1++){
 
-          int blanc = 1;
-          for(int ix = x0; ix <= x1 && blanc; ix++){
-            for(int iy = y0; iy <= y1 && blanc; iy++){
-              if(tiles->values[iy][ix] == 1){
-                blanc = 0;
-              }
+          noBlackFound = 1;
+          // ix, iy are the right bottom corner
+          for(int ix = x0; ix <= x1 && noBlackFound; ix++){
+            for(int iy = y0; iy <= y1 && noBlackFound; iy++){
+              if(tiles->values[iy][ix] == 1) noBlackFound = 0;
             }
           }
 
-          if(blanc){
-            int w = x1-x0+1;
-            int h = y1-y0+1;
-            if(w*h > maxWidth*maxHeight){
-            printf("WIDTH : %i\nHEIGHT : %i\nx0: %i, x1: %i\ny0: %i, y1: %i\n", w, h, x0, x1, y0, y1);
-              maxWidth = w;
-              maxHeight = h;
+          if(noBlackFound){
+            // x0 and y0 should be always bigger so no real need no use abs()
+            int area = (x1-x0+1) * (y1-y0+1);
+            if(area > max){
+              max = area;
+              x0_max = x0;
+              y0_max = y0;
+              x1_max = x1;
+              y1_max = y1;
             }
           }
         }
       }
     }
   }
-  printf("WIDTH : %i\nHEIGHT : %i\n", maxWidth, maxHeight);
+
+  printf("MAX FOUND : \n");
+  printf("x0 : %d , y0 : %d     xm : %d , ym : %d \n", x0_max, y0_max, x1_max, y1_max);
+  printf("SIZE : %d \n", max);
 }
 
 // Principe de l'algo : 
@@ -47,8 +55,8 @@ void solution2(Tiling * tiles){
   int x0_max=0, y0_max=0;
   int x1_max=0, y1_max=0;
 
-  for(int x0=0; x0 < 1; x0++){
-    for(int y0=0; y0 < 1; y0++){
+  for(int x0=0; x0 < tiles->columns; x0++){
+    for(int y0=0; y0 < tiles->lines; y0++){
       // x1, y1 : current bottom right corner position
       int x1 = x0;
       int y1 = y0;
