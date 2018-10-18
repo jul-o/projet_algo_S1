@@ -1,1 +1,1 @@
-gcc ./src/*.c -o main.o -Wall -std=c99
+gcc ./src/*.c -o main -Wall -std=c99 -g
