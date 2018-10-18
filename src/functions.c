@@ -1,121 +1,94 @@
 #define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 #include "functions.h"
 
 #define MAX_SIZE_LINE 200
-
-void get_dimensions(char* l, int* lines, int* cols){
-  int nb_char_lines = 0;
-  int nb_char_cols = 0;
-  int i = 0;
-  for(; l[i] != ' '; i++){
-    if(!isdigit(l[i])){
-      //verification qu'on a bien un chiffre
-      printf("[ERREUR] : le nombre de lignes doit être uniquement composé de chiffres : %d", l[i]);
-      return;
-    }
-    nb_char_lines++;
-  }i++;
-  for(; l[i] != '\0' && l[i] != '\n'; i++){
-    if(!isdigit(l[i])){
-      //verification qu'on a bien un chiffre
-      printf("[ERREUR] : le nombre de colonnes doit être uniquement composé de chiffres : %d", l[i]);
-      return;
-    }
-    nb_char_cols++;
-  }
-  i = 0;
-  char* str_lines = malloc(nb_char_lines+1);
-  char* str_cols = malloc(nb_char_cols+1);
-  for(; l[i] != ' '; i++){
-    str_lines[i] = l[i];
-  }
-  i++;
-  int j=0;
-  for(; l[i] != '\0'; i++){
-    str_cols[j++] = l[i];
-  }
-  *lines = atoi(str_lines);
-  *cols = atoi(str_cols);
-}
 
 struct tiling* loadTiling(char * filePath){
   // Open the file
   FILE * f;
   f = fopen(filePath, "r");
-
   if(f==NULL){
     printf("Error reading file %s", filePath);
     exit(EXIT_FAILURE);
   }
 
-  // The first lines are the tiling size
+  // Get the tiling size form the file
   int lines, columns;
-  // TODO : utiliser une autre méthode pour interdire les mauvais caractères
-  char* line0 = NULL;
-  size_t len=0;
-  getline(&line0, &len, f);
-  get_dimensions(line0, &lines, &columns);
-  // fscanf(f, "%d %d %s", &lines, &columns, temp);
+  readTilingDimensions(f, &lines, &columns);
 
-  if(lines <= 0){
-    printf("[ERREUR] : le nombre de lignes doit être supérieur à 0 \n");
-    exit(EXIT_FAILURE);
-  }
-  if(columns <= 0){
-    printf("[ERREUR] : le nombre de colonnes doit être supérieur à 0 %d\n", columns);
-    exit(EXIT_FAILURE);
-  }
+  // Then create the tiling
+  int ** tiling = malloc(lines * sizeof(int*));
+  for(int i = 0; i < lines; i++) tiling[i] = malloc(columns * sizeof(int));
 
-  bool** tiling = malloc(sizeof(int*)*columns);
-  for(int i = 0; i < columns; i++) tiling[i] = malloc(sizeof(int)*lines);
-  
-  char buffer[MAX_SIZE_LINE] = "";
-  int current;
-  int currentLine=0;
-  int currentColumn=0;
-  int i;
-  while(fgets(buffer, MAX_SIZE_LINE, f) != NULL){
-    currentColumn=0;
-    for(i=0; i < strlen(buffer)-1; i++){
-      if(buffer[i] != '0' && buffer[i] != '1'){
-        printf("[ERREUR] : le dallage ne doit être composé que de '0' et de '1'\n");
-        exit(EXIT_FAILURE);
-      }
-      current = buffer[i] - '0'; // Simple trick to convert the char to int
-      tiling[currentLine][currentColumn] = current;
-      currentColumn++;
-    }
-    //vérification de la taille de la ligne
-    if(currentColumn != columns){
-      printf("[ERREUR] : ligne de mauvaise taille (ligne %d)", currentLine);
-      exit(EXIT_FAILURE);
-    }
-    currentLine++;
-  }
-  if(currentLine < lines){
-    printf("Nombre de lignes incorrect\n");
-    exit(EXIT_FAILURE);
-  }
+  readTiling(f, &lines, &columns, tiling);
 
-  struct tiling* res = malloc(sizeof(tiling));
+  fclose(f);
+
+  Tiling * res = malloc(sizeof(tiling));
   res->lines = lines;
   res->columns = columns;
   res->values = tiling;
 
-
-  fclose(f);
   return res;
+}
+
+void readTilingDimensions(FILE * f, int * lines, int * columns){
+  char* line = NULL;
+  size_t len=0;
+  getline(&line, &len, f);
+  int readed = sscanf(line, "%d %d", lines, columns);
+  if(readed < 2){
+    printf("Error : The dimensions in the file are incorrect.");
+    return;
+  }
+}
+
+void readTiling(FILE * f, int * lines, int * columns, int ** tiling){
+  // Finaly read the file and fill the tiling
+  char buffer[MAX_SIZE_LINE];
+  int current;
+  int lineCounter=0;
+  int columnCounter=0;
+  while(fgets(buffer, MAX_SIZE_LINE, f) != NULL){
+    // Check lines sizes (max)
+    if(lineCounter >= *lines){
+      printf("loadTiling ERROR : Too much lines in the files \n"); 
+      return;
+    }
+
+    columnCounter=0;
+    for(int i=0; i < strlen(buffer)-1; i++){
+      if(buffer[i] != '0' && buffer[i] != '1'){
+        printf("loadTiling ERROR : unexpected character in file (should be only 0 and 1) \n");
+        return;
+      }
+      current = buffer[i] - '0'; // Simple trick to convert the char to int
+      tiling[lineCounter][columnCounter] = current;
+      columnCounter++;
+    }
+
+    // Checking column size (min+max)
+    if(columnCounter != *columns){
+      printf("loadTiling ERROR : bad column size for line : %d \n", lineCounter);
+      return;
+    }
+
+    lineCounter++;
+  }
+
+  // Check lines sizes (min)
+  if(lineCounter != *lines){
+    printf("loadTiling ERROR : Not enough lines \n");
+    return;
+  }
 }
 
 void displayTiling(Tiling * t){
   for(int i=0; i<t->lines; i++){
     for(int j=0; j<t->columns; j++){
       if(t->values[i][j] == 0) printf("0");
-      if(t->values[i][j] == 1) printf("1");
+      else if(t->values[i][j] == 1) printf("1");
+      else printf("X");
     }
     printf("\n");
   }

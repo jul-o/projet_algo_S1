@@ -4,5 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void solution_1(Tiling * tiles);
+void solution1(Tiling * tiles);
+void solution2(Tiling * tiles);
+void solution3(Tiling* tiles);
+
 #endif

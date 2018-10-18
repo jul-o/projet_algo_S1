@@ -1,14 +1,19 @@
 #ifndef FUNCTIONS
 #define FUNCTIONS
-#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 typedef struct tiling{
     int lines;
     int columns;
-    bool ** values;
+    int ** values;
 } Tiling;
 
-void get_dimensions(char* buffer, int* i_width, int* i_height);
+void readTilingDimensions(FILE * f, int * rows, int * columns);
+void readTiling(FILE * f, int * lines, int * columns, int ** tiling);
+
 void displayTiling();
 
 Tiling* loadTiling(char * filePath);
