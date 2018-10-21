@@ -192,59 +192,37 @@ void checkOpenRectangles(Tiling* tiles, Node** stack, int i, int j, int* heights
         r.x = j;
         pushStack(stack, r);
     }
-    int openRectangleOk = isStackEmpty(*stack);
-    // read the current rectangle. if it encounters a black tile or the end of the line, close it and unstack it
-    while (!openRectangleOk && !isStackEmpty(*stack)) {
-        open_rect curr_rec = readStack(*stack);
-        int k = i;
-        // for the current col check for each line of the rectangle if it encounters a black tile
-        while (k > i - curr_rec.h) {
-            // check if it's a black tile
-            if (tiles->values[k][j] == 1) {
-                // unstack the current rectangle and check if it's bigger than the biggest rectangle met yet
-                int x0t = curr_rec.x;
-                int x1t = j - 1;
-                int y0t = i - curr_rec.h + 1;
-                int y1t = i;
-                int w = x1t - x0t + 1;
-                int h = y1t - y0t + 1;
-                if (w * h > *max_size) {
-                    *max_size = w * h;
-                    *x0 = x0t;
-                    *y0 = y0t;
-                    *x1 = x1t;
-                    *y1 = y1t;
-                }
-                // printf("x0 : %d, x1 : %d, y0 : %d, y1 : %d\n", x0t, x1t, y0t, y1t);
-                popStack(stack);
-                break;
-            } else if (k == i - curr_rec.h + 1) {
-                // the rectangle has not met any black tile yet
-                if (j == tiles->columns - 1) {
-                    // end of the line, unstack all rectangles and check if they're bigger than the biggest rectangle met yet
-                    int x0t = curr_rec.x;
-                    // count the last column since no black tile has been met
-                    int x1t = j;
-                    int y0t = i - curr_rec.h + 1;
-                    int y1t = i;
-                    int w = x1t - x0t + 1;
-                    int h = y1t - y0t + 1;
-                    if (w * h > *max_size) {
-                        *max_size = w * h;
-                        *x0 = x0t;
-                        *y0 = y0t;
-                        *x1 = x1t;
-                        *y1 = y1t;
-                    }
-                    // printf("x0 : %d, x1 : %d, y0 : %d, y1 : %d\n", x0t, x1t, y0t, y1t);
-                    popStack(stack);
-
-                } else {
-                    // it's not the end of the line and no black tile has been met, don't unstack, quit the loop
-                    openRectangleOk = 1;
-                }
-            }
-            k--;
+    // int openRectangleOk = isStackEmpty(*stack);
+    open_rect curr_rec;
+    if (!isStackEmpty(*stack))
+        curr_rec = readStack(*stack);
+    while (!isStackEmpty(*stack) && (curr_rec.h > heights[j] || j == tiles->columns - 1)) {
+        // unstack the current rectangle and check if it's bigger than the biggest rectangle met yet
+        int x0t = curr_rec.x;
+        int x1t;
+        int y0t = i - curr_rec.h + 1;
+        int y1t = i;
+        if (j != tiles->columns - 1) {
+            // don't count the current col : the rectangle has met a black tile
+            x1t = j - 1;
+        } else {
+            // end of line : count the current col
+            x1t = j;
         }
+        // calculate the width and height of the current rectangle
+        int w = x1t - x0t + 1;
+        int h = y1t - y0t + 1;
+        // check if the current rectangle is bigger than the biggest one met
+        if (w * h > *max_size) {
+            *max_size = w * h;
+            *x0 = x0t;
+            *y0 = y0t;
+            *x1 = x1t;
+            *y1 = y1t;
+        }
+        printf("x0 : %d, x1 : %d, y0 : %d, y1 : %d\n", x0t, x1t, y0t, y1t);
+        popStack(stack);
+        if (!isStackEmpty(*stack))
+            curr_rec = readStack(*stack);
     }
 }
