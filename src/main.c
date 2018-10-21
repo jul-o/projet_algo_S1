@@ -23,16 +23,15 @@ int main(int argc, char** argv){
   char * path = "ressources/45-1";
   Tiling * tiles = loadTiling(path);
 
-  // testSolution(solution4, 50, 50, 20);
-  // testSolution(solution4, 100, 100, 20);
-  // testSolution(solution4, 150, 150, 20);
-  // testSolution(solution4, 150, 150, 90);
-  // testSolution(solution4, 250, 250, 20);
-  // testSolution(solution4, 600, 600, 20);
-  // testSolution(solution4, 600, 600, 90);
-  // testSolution(solution4, 3000, 4000, 20);
-  // testSolution(solution4, 5000, 6000, 20);
-
+  testSolution(solution4, 50, 50, 20);
+  testSolution(solution4, 100, 100, 20);
+  testSolution(solution4, 150, 150, 20);
+  testSolution(solution4, 150, 150, 90);
+  testSolution(solution4, 250, 250, 20);
+  testSolution(solution4, 600, 600, 20);
+  testSolution(solution4, 600, 600, 90);
+  testSolution(solution4, 3000, 4000, 20);
+  testSolution(solution4, 5000, 6000, 20);
 
   // solution1(tiles);
   // solution2(tiles);
