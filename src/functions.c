@@ -93,3 +93,27 @@ void displayTiling(Tiling * t){
     printf("\n");
   }
 }
+
+Tiling* randomTiling(int lines, int columns, int blackTilePercentage){
+  int ** tiling = malloc(lines * sizeof(int*));
+  for(int i = 0; i < lines; i++) tiling[i] = malloc(columns * sizeof(int));
+
+  srand (time(NULL));
+
+  int rnd;
+  int tileValue;
+  for(int i=0; i < lines; i++){
+    for(int j=0; j < columns; j++){
+      tileValue = 0;
+      rnd = rand() % 101;
+      if(rnd <= blackTilePercentage) tileValue = 1;
+      tiling[i][j] = tileValue;
+    }
+  }
+
+  Tiling * res = malloc(sizeof(tiling));
+  res->lines = lines;
+  res->columns = columns;
+  res->values = tiling;
+  return res;
+}

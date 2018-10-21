@@ -215,7 +215,7 @@ void checkOpenRectangles(Tiling* tiles, Node** stack, int i, int j, int* heights
                     *x1 = x1t;
                     *y1 = y1t;
                 }
-                printf("x0 : %d, x1 : %d, y0 : %d, y1 : %d\n", x0t, x1t, y0t, y1t);
+                // printf("x0 : %d, x1 : %d, y0 : %d, y1 : %d\n", x0t, x1t, y0t, y1t);
                 popStack(stack);
                 break;
             } else if (k == i - curr_rec.h + 1) {
@@ -236,7 +236,7 @@ void checkOpenRectangles(Tiling* tiles, Node** stack, int i, int j, int* heights
                         *x1 = x1t;
                         *y1 = y1t;
                     }
-                    printf("x0 : %d, x1 : %d, y0 : %d, y1 : %d\n", x0t, x1t, y0t, y1t);
+                    // printf("x0 : %d, x1 : %d, y0 : %d, y1 : %d\n", x0t, x1t, y0t, y1t);
                     popStack(stack);
 
                 } else {

@@ -17,5 +17,6 @@ void readTiling(FILE * f, int * lines, int * columns, int ** tiling);
 void displayTiling();
 
 Tiling* loadTiling(char * filePath);
+Tiling* randomTiling(int lines, int rows, int blackTilePercentage);
 
 #endif
