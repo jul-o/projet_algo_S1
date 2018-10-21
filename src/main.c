@@ -11,6 +11,7 @@ int main(int argc, char** argv){
   // solution1(tiles);
   // solution2(tiles);
   // solution3(tiles);
+  solution4(tiles);
 
   // displayTiling(tiles);
 

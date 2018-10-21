@@ -2,7 +2,7 @@
 
 // Defining struct here for encapsulation
 struct node_s{
-    int v;
+    open_rect v;
     struct node_s * next;
 };
 
@@ -10,7 +10,7 @@ Node * createStack(){
     return NULL;
 }
 
-void pushStack(Node ** stack, int v){
+void pushStack(Node ** stack, open_rect v){
     Node * newNode = malloc(sizeof(Node));
     newNode->v = v;
     newNode->next = *stack;
@@ -38,8 +38,12 @@ void popStack(Node ** stack){
 
 void printStack(Node * stack){
     while(stack != NULL){
-        printf("%d ", stack->v);
+        printf("%d ", (stack->v).h);
         stack = stack->next;
     }
     printf("\n");
+}
+
+open_rect readStack(Node* stack){
+    return stack->v;
 }

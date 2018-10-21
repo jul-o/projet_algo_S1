@@ -1,31 +1,30 @@
 #include "fonctions_reponses.h"
 
-void solution1(Tiling * tiles){
+void solution1(Tiling* tiles) {
     int max = 0;
-    int x0_max=0, y0_max=0;
-    int x1_max=0, y1_max=0;
+    int x0_max = 0, y0_max = 0;
+    int x1_max = 0, y1_max = 0;
 
     int noBlackFound;
 
     // x0, y0 is the top left corner
-    for(int y0 = 0; y0 < tiles->lines; y0++){
-        for(int x0 = 0; x0 < tiles->columns; x0++){
+    for (int y0 = 0; y0 < tiles->lines; y0++) {
+        for (int x0 = 0; x0 < tiles->columns; x0++) {
             // x1, y1 are the max values that the reactangle can take
-            for(int y1 = y0; y1 < tiles->lines; y1++){
-                for(int x1 = x0; x1 < tiles->columns; x1++){
-
+            for (int y1 = y0; y1 < tiles->lines; y1++) {
+                for (int x1 = x0; x1 < tiles->columns; x1++) {
                     noBlackFound = 1;
                     // ix, iy are the right bottom corner
-                    for(int ix = x0; ix <= x1 && noBlackFound; ix++){
-                        for(int iy = y0; iy <= y1 && noBlackFound; iy++){
-                            if(tiles->values[iy][ix] == 1) noBlackFound = 0;
+                    for (int ix = x0; ix <= x1 && noBlackFound; ix++) {
+                        for (int iy = y0; iy <= y1 && noBlackFound; iy++) {
+                            if (tiles->values[iy][ix] == 1) noBlackFound = 0;
                         }
                     }
 
-                    if(noBlackFound){
+                    if (noBlackFound) {
                         // x0 and y0 should be always bigger so no real need no use abs()
-                        int area = (x1-x0+1) * (y1-y0+1);
-                        if(area > max){
+                        int area = (x1 - x0 + 1) * (y1 - y0 + 1);
+                        if (area > max) {
                             max = area;
                             x0_max = x0;
                             y0_max = y0;
@@ -43,33 +42,33 @@ void solution1(Tiling * tiles){
     printf("SIZE : %d \n", max);
 }
 
-// Principe de l'algo : 
+// Principe de l'algo :
 // (Info en plus du sujet)
 // On parcours chaque case du dallage
 // Pour chaque case du dallage, on regarde tous les plus grand rectangles qu'on puisse faire en utilisant la case de dallage actuel comme coin supérieur gauche
 // Dès qu'on a trouver la largeur max, on regarde la taille du rectangle en utilisant le coin inférieur droit trouvé
 // Si sa surface est plus grande que tous ceux trouvé auparavant, on le retient comme candidat
-void solution2(Tiling * tiles){
-  // x0, y0 : top left corner
-  int max = 0;
-  int x0_max=0, y0_max=0;
-  int x1_max=0, y1_max=0;
+void solution2(Tiling* tiles) {
+    // x0, y0 : top left corner
+    int max = 0;
+    int x0_max = 0, y0_max = 0;
+    int x1_max = 0, y1_max = 0;
 
-    for(int x0=0; x0 < tiles->columns; x0++){
-        for(int y0=0; y0 < tiles->lines; y0++){
+    for (int x0 = 0; x0 < tiles->columns; x0++) {
+        for (int y0 = 0; y0 < tiles->lines; y0++) {
             // x1, y1 : current bottom right corner position
             int x1 = x0;
             int y1 = y0;
 
-            int max_x = tiles->columns-1;
+            int max_x = tiles->columns - 1;
 
             // TODO : fix inversion cols/rows
-            while(y1 < tiles->lines && tiles->values[y1][x1] != 1){
-                while(x1 < tiles->columns  && tiles->values[y1][x1] != 1 && x1 < max_x) x1++;
-                if(tiles->values[y1][x1] == 1) x1--; // If the last one was a 1, don't count it
+            while (y1 < tiles->lines && tiles->values[y1][x1] != 1) {
+                while (x1 < tiles->columns && tiles->values[y1][x1] != 1 && x1 < max_x) x1++;
+                if (tiles->values[y1][x1] == 1) x1--;  // If the last one was a 1, don't count it
 
                 int area = abs(x1 - x0 + 1) * abs(y1 - y0 + 1);
-                if(area>max){
+                if (area > max) {
                     max = area;
                     x0_max = x0;
                     y0_max = y0;
@@ -80,7 +79,7 @@ void solution2(Tiling * tiles){
                 max_x = x1;
 
                 y1++;
-                x1=x0;
+                x1 = x0;
             }
         }
     }
@@ -95,19 +94,19 @@ void solution3(Tiling* tiles) {
     int x1 = 0;
     int y0 = 0;
     int y1 = 0;
-    int hauteurs[tiles->columns];
+    int heights[tiles->columns];
     int max_size = 0;
     for (int i = 0; i < tiles->lines; i++) {
         for (int j = 0; j < tiles->columns; j++) {
-            // initialisation des hauteurs à 0
+            // initialisation des heights à 0
             if (i == 0)
-                hauteurs[j] = 0;
+                heights[j] = 0;
 
             int val = tiles->values[i][j];
             if (val == 0)
-                hauteurs[j]++;
+                heights[j]++;
             else
-                hauteurs[j] = 0;
+                heights[j] = 0;
             // évaluation du plus grand rectangle de bord bas i
         }
         for (int l = 0; l < tiles->columns; l++) {
@@ -115,11 +114,11 @@ void solution3(Tiling* tiles) {
             // initializing the current rectangle coords
             int x0curr = l;
             int x1curr = l;
-            int y0curr = i - hauteurs[l] + 1;
+            int y0curr = i - heights[l] + 1;
             int y1curr = i;
             if (tiles->values[i][l] == 0) {
                 for (int k = l + 1; k < tiles->columns; k++) {
-                    if (hauteurs[k] >= hauteurs[l]) {
+                    if (heights[k] >= heights[l]) {
                         width++;
                         // updating the rectangle's right side coord
                         x1curr = k;
@@ -127,7 +126,7 @@ void solution3(Tiling* tiles) {
                         break;
                 }
                 for (int k = l - 1; k >= 0; k--) {
-                    if (hauteurs[k] >= hauteurs[l]) {
+                    if (heights[k] >= heights[l]) {
                         width++;
                         // updating the rectangle's left side coord
                         x0curr = k;
@@ -135,8 +134,8 @@ void solution3(Tiling* tiles) {
                         break;
                 }
                 // updating the max rectangle and its coords if it is bigger than the previous one
-                if (width * hauteurs[l] > max_size) {
-                    max_size = width * hauteurs[l];
+                if (width * heights[l] > max_size) {
+                    max_size = width * heights[l];
                     x0 = x0curr;
                     x1 = x1curr;
                     y0 = y0curr;
@@ -147,4 +146,105 @@ void solution3(Tiling* tiles) {
     }
     printf("TAILLE : %i\nx0 : %i, x1 : %i\ny0 : %i, y1 : %i\n", max_size, x0, x1,
            y0, y1);
+}
+
+void solution4(Tiling* tiles) {
+    int x0 = 0;
+    int x1 = 0;
+    int y0 = 0;
+    int y1 = 0;
+    int heights[tiles->columns];
+    int max_size = 0;
+    Node* stack = createStack();
+    for (int i = 0; i < tiles->lines; i++) {
+        for (int j = 0; j < tiles->columns; j++) {
+            // initializing the heights' array's cells to 0
+            if (i == 0)
+                heights[j] = 0;
+
+            int val = tiles->values[i][j];
+            if (val == 0)
+                heights[j]++;
+            else
+                heights[j] = 0;
+
+            checkOpenRectangles(tiles, &stack, i, j, heights, &max_size, &x0, &y0, &x1, &y1);
+        }
+    }
+    printf("MAX : %d\n%d:%d, %d:%d\n", max_size, x0, y0, x1, y1);
+}
+
+/**
+ * params :
+     * tiles : the tiles' struct
+     * stack : stack containing the open rectangles
+     * i : current line
+     * j : current column
+     * heights : the heights' array
+     * max_size : max rectangle yet's size
+     * x0, y0, x1, y1 : max rectangle yet's coords
+ */
+void checkOpenRectangles(Tiling* tiles, Node** stack, int i, int j, int* heights, int* max_size, int* x0, int* y0, int* x1, int* y1) {
+    if ((isStackEmpty(*stack) && tiles->values[i][j] == 0) || (!isStackEmpty(*stack) && readStack(*stack).h < heights[j])) {
+        // adding a rectangle to the satck
+        open_rect r;
+        r.h = heights[j];
+        r.x = j;
+        pushStack(stack, r);
+    }
+    int openRectangleOk = isStackEmpty(*stack);
+    // read the current rectangle. if it encounters a black tile or the end of the line, close it and unstack it
+    while (!openRectangleOk && !isStackEmpty(*stack)) {
+        open_rect curr_rec = readStack(*stack);
+        int k = i;
+        // for the current col check for each line of the rectangle if it encounters a black tile
+        while (k > i - curr_rec.h) {
+            // check if it's a black tile
+            if (tiles->values[k][j] == 1) {
+                // unstack the current rectangle and check if it's bigger than the biggest rectangle met yet
+                int x0t = curr_rec.x;
+                int x1t = j - 1;
+                int y0t = i - curr_rec.h + 1;
+                int y1t = i;
+                int w = x1t - x0t + 1;
+                int h = y1t - y0t + 1;
+                if (w * h > *max_size) {
+                    *max_size = w * h;
+                    *x0 = x0t;
+                    *y0 = y0t;
+                    *x1 = x1t;
+                    *y1 = y1t;
+                }
+                printf("x0 : %d, x1 : %d, y0 : %d, y1 : %d\n", x0t, x1t, y0t, y1t);
+                popStack(stack);
+                break;
+            } else if (k == i - curr_rec.h + 1) {
+                // the rectangle has not met any black tile yet
+                if (j == tiles->columns - 1) {
+                    // end of the line, unstack all rectangles and check if they're bigger than the biggest rectangle met yet
+                    int x0t = curr_rec.x;
+                    // count the last column since no black tile has been met
+                    int x1t = j;
+                    int y0t = i - curr_rec.h + 1;
+                    int y1t = i;
+                    int w = x1t - x0t + 1;
+                    int h = y1t - y0t + 1;
+                    if (w * h > *max_size) {
+                        *max_size = w * h;
+                        *x0 = x0t;
+                        *y0 = y0t;
+                        *x1 = x1t;
+                        *y1 = y1t;
+                    }
+                    printf("x0 : %d, x1 : %d, y0 : %d, y1 : %d\n", x0t, x1t, y0t, y1t);
+                    popStack(stack);
+
+                } else {
+                    // it's not the end of the line and no black tile has been met, don't unstack, quit the loop
+                    openRectangleOk = 1;
+                }
+            }
+            k--;
+        }
+    }
 }
