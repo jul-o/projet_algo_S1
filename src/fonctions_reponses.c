@@ -85,67 +85,56 @@ void solution2(Tiling* tiles) {
     }
 
     printf("MAX FOUND : \n");
-    printf("x0 : %d , y0 : %d     xm : %d , ym : %d \n", x0_max, y0_max, x1_max, y1_max);
+    printf("x0 : %d , y0 : %d     x1 : %d , y1 : %d \n", x0_max, y0_max, x1_max, y1_max);
     printf("SIZE : %d \n", max);
 }
 
 void solution3(Tiling* tiles) {
-    int x0 = 0;
-    int x1 = 0;
-    int y0 = 0;
-    int y1 = 0;
-    int heights[tiles->columns];
-    int max_size = 0;
-    for (int i = 0; i < tiles->lines; i++) {
-        for (int j = 0; j < tiles->columns; j++) {
-            // initialisation des heights à 0
-            if (i == 0)
-                heights[j] = 0;
+    int x0_max = 0;
+    int x1_max = 0;
+    int y0_max = 0;
+    int y1_max = 0;
+    int max = 0;
 
-            int val = tiles->values[i][j];
-            if (val == 0)
-                heights[j]++;
-            else
-                heights[j] = 0;
-            // évaluation du plus grand rectangle de bord bas i
+    int heights[tiles->columns];
+    for (int i = 0; i < tiles->lines; i++) {
+        // Step 1 . Calcul des hauteurs
+        for (int j = 0; j < tiles->columns; j++) {
+            if (i == 0) heights[j] = 0;
+
+            if(tiles->values[i][j] == 0) heights[j]++;
+            else heights[j] = 0;
         }
-        for (int l = 0; l < tiles->columns; l++) {
-            int width = 1;
-            // initializing the current rectangle coords
-            int x0curr = l;
-            int x1curr = l;
-            int y0curr = i - heights[l] + 1;
-            int y1curr = i;
-            if (tiles->values[i][l] == 0) {
-                for (int k = l + 1; k < tiles->columns; k++) {
-                    if (heights[k] >= heights[l]) {
-                        width++;
-                        // updating the rectangle's right side coord
-                        x1curr = k;
-                    } else
-                        break;
-                }
-                for (int k = l - 1; k >= 0; k--) {
-                    if (heights[k] >= heights[l]) {
-                        width++;
-                        // updating the rectangle's left side coord
-                        x0curr = k;
-                    } else
-                        break;
-                }
-                // updating the max rectangle and its coords if it is bigger than the previous one
-                if (width * heights[l] > max_size) {
-                    max_size = width * heights[l];
-                    x0 = x0curr;
-                    x1 = x1curr;
-                    y0 = y0curr;
-                    y1 = y1curr;
-                }
+
+        // Step 2 . On regarde quel rectangle sont faisable avec le tableau de hauteurs
+        for (int j = 0; j < tiles->columns; j++) {
+            if (tiles->values[i][j] != 0) continue;
+            
+            // Les y coords sont facilement trouvable avec le tableau de hauteur : 
+            int y0 = i - heights[j] + 1;
+            int y1 = i;
+
+            // Maintenant il faut trouver les coords x le plus grand possible
+            int x0 = j;
+            int x1 = j;
+            while(x1 < tiles->columns - 1 && heights[x1+1] >= heights[j]) x1++;
+            while(x0 > 0 && heights[x0-1] >= heights[j]) x0--;
+
+            // Comparons l'air de ce rectangle avec l'air du plus grand trouvé
+            int area = (x1 - x0 + 1) * (y1 - y0 + 1);
+            if ( area > max ) {
+                max = area;
+                x0_max = x0;
+                y0_max = y0;
+                x1_max = x1;
+                y1_max = y1;
             }
         }
     }
-    printf("TAILLE : %i\nx0 : %i, x1 : %i\ny0 : %i, y1 : %i\n", max_size, x0, x1,
-           y0, y1);
+
+    printf("MAX FOUND : \n");
+    printf("x0 : %d , y0 : %d     x1 : %d , y1 : %d \n", x0_max, y0_max, x1_max, y1_max);
+    printf("SIZE : %d \n", max);
 }
 
 void solution4(Tiling* tiles) {
