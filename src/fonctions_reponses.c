@@ -159,14 +159,11 @@ void solution4(Tiling* tiles) {
     for (int i = 0; i < tiles->lines; i++) {
         for (int j = 0; j < tiles->columns; j++) {
             // initializing the heights' array's cells to 0
-            if (i == 0)
-                heights[j] = 0;
+            if (i == 0) heights[j] = 0;
 
             int val = tiles->values[i][j];
-            if (val == 0)
-                heights[j]++;
-            else
-                heights[j] = 0;
+            if (val == 0) heights[j]++;
+            else heights[j] = 0;
 
             checkOpenRectangles(tiles, &stack, i, j, heights, &max_size, &x0, &y0, &x1, &y1);
         }
