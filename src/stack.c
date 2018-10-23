@@ -2,7 +2,8 @@
 
 // Defining struct here for encapsulation
 struct node_s{
-    open_rect v;
+    int x;
+    int h;
     struct node_s * next;
 };
 
@@ -10,9 +11,10 @@ Node * createStack(){
     return NULL;
 }
 
-void pushStack(Node ** stack, open_rect v){
+void pushStack(Node ** stack, int x, int h){
     Node * newNode = malloc(sizeof(Node));
-    newNode->v = v;
+    newNode->x = x;
+    newNode->h = h;
     newNode->next = *stack;
 
     *stack = newNode;
@@ -32,19 +34,21 @@ void popStack(Node ** stack){
     Node * newHead = (*stack)->next;
     if(newHead == NULL)  *stack = NULL;
 
+    // free((*stack)->v);
     free(*stack);
     *stack = newHead;
 }
 
-void printStack(Node * stack){
-    while(stack != NULL){
-        printf("%d ", (stack->v).h);
-        stack = stack->next;
-    }
-    printf("\n");
-}
+// void printStack(Node * stack){
+//     while(stack != NULL){
+//         printf("%d ", (stack->v).h);
+//         stack = stack->next;
+//     }
+//     printf("\n");
+// }
 
 // TODO : ajouter préconditions 
-open_rect readStack(Node* stack){
-    return stack->v;
+void readStack(Node* stack, int * x, int * h){
+    *x=stack->x,
+    *h=stack->h;
 }

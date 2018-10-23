@@ -9,9 +9,9 @@
 
 double testSolution(void (*f)(Tiling *), int lines, int columns, int ratio){
   clock_t start, end;
-  start = clock();
   Tiling * tiling = randomTiling(lines,columns,ratio);
   // displayTiling(tiling);
+  start = clock();
   (*f)(tiling);
   end = clock();
   double res =  ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -22,10 +22,10 @@ double testSolution(void (*f)(Tiling *), int lines, int columns, int ratio){
 }
 
 int main(int argc, char** argv){
-  // char * path = "ressources/case2";
-  // Tiling * tiles = loadTiling(path);
-  // displayTiling(tiles);
-  // solution4bis(tiles);
+  char * path = "ressources/wtf";
+  Tiling * tiles = loadTiling(path);
+  displayTiling(tiles);
+  solution3(tiles);
 
   // testSolution(solution4, 50, 50, 20);
   // testSolution(solution4, 100, 100, 20);
@@ -38,7 +38,7 @@ int main(int argc, char** argv){
   // testSolution(solution4, 5000, 6000, 20);
   // testSolution(solution3, 10000, 10000, 20);
 
-  testSolution(solution4bis, 500, 500, 30);
+  testSolution(solution4bis, 600, 600, 20);
 
 
   // For debuging purpose
