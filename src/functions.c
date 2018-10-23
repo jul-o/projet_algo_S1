@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+#include <time.h> 
 #include "functions.h"
 
 #define MAX_SIZE_LINE 200

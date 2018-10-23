@@ -138,6 +138,88 @@ void solution3(Tiling* tiles) {
     printf("SIZE : %d \n", max);
 }
 
+void popAllAndCheck(Node ** stack, int currentHeight, int j, int i,
+                    int *x0_max, int *x1_max, int *y0_max, int * y1_max, int *max,
+                    int saveLastRect){
+    open_rect rect;
+    while(!isStackEmpty(*stack)){
+        rect = readStack(*stack);
+        popStack(stack);
+
+        int x0 = rect.x, x1 = j;
+        int y0 =  i - rect.h + 1, y1 = i;
+        int area = (x1 - x0 + 1) * (y1 - y0 + 1);
+        if ( area > *max ) {
+            *max = area;
+            *x0_max = x0;
+            *y0_max = y0;
+            *x1_max = x1;
+            *y1_max = y1;
+        }
+
+        if(*stack == NULL && saveLastRect){
+            rect.h = currentHeight;
+            pushStack(stack, rect);
+            break;
+        }
+    }
+}
+
+void solution4bis(Tiling * tiles){
+    // Res : 
+    int x0_max = 0;
+    int x1_max = 0;
+    int y0_max = 0;
+    int y1_max = 0;
+    int max = 0;
+
+    int heights[tiles->columns];
+    Node* stack = createStack();
+    for(int i=0; i < tiles->lines; i++){
+        // Step 1 . Calcul des hauteurs
+        for (int j = 0; j < tiles->columns; j++) {
+            if (i == 0) heights[j] = 0;
+
+            if(tiles->values[i][j] == 0) heights[j]++;
+            else heights[j] = 0;
+        }
+
+        // Step 2 . On check les différents rectangles
+        int currentHeight = 0;
+        int maxHeight = -1;
+        for(int j = 0; j < tiles -> columns; j++){
+            if (tiles->values[i][j] != 0){
+                // Pas préciser dans le sujet d'ailleurs ? : (la il faut tout dépiler)
+                // j-1 !! on ne compte pas le 1
+                popAllAndCheck(&stack, currentHeight, j-1, i, &x0_max, &x1_max, &y0_max, &y1_max, &max, 0);
+                maxHeight = 0;
+                continue;
+            }
+
+            currentHeight = heights[j];
+
+            if(currentHeight > maxHeight){
+                maxHeight = currentHeight;
+                open_rect rect = {.x = j , .h = currentHeight};
+                pushStack(&stack, rect);
+            }
+            
+            if(currentHeight < maxHeight){
+                popAllAndCheck(&stack, currentHeight, j-1, i, &x0_max, &x1_max, &y0_max, &y1_max, &max, 1);
+                maxHeight = currentHeight;
+            }
+
+            if(j == tiles->columns -1){
+                popAllAndCheck(&stack, currentHeight, j, i, &x0_max, &x1_max, &y0_max, &y1_max, &max, 0);
+            }
+        }
+    }
+
+    printf("MAX FOUND : \n");
+    printf("x0 : %d , y0 : %d     x1 : %d , y1 : %d \n", x0_max, y0_max, x1_max, y1_max);
+    printf("SIZE : %d \n", max);
+}
+
 void solution4(Tiling* tiles) {
     int x0 = 0;
     int x1 = 0;

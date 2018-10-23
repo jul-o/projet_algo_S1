@@ -1,0 +1,6 @@
+5 5 
+11100
+00010
+11100
+00001 // Ici cas chiant car ile ne faut pas que cela fasse un 2*4 mais un 1*4 (pas compter la hateur du nouveau open rect)
+01101
