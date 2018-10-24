@@ -164,23 +164,21 @@ void solution4bis(Tiling * tiles){
         int mustPopAll=0;
         int mustSaveLastReactangle=0;
         int popPosition=0;
-        int stackSize=0;
+        open_rect r;
         for(int j = 0; j < tiles -> columns; j++){
             mustPopAll=0;
             mustSaveLastReactangle=0;
             currentHeight = heights[j];
 
             if (tiles->values[i][j] != 0){
-                // Pas préciser dans le sujet d'ailleurs ? : (la il faut tout dépiler)
-                // j-1 !! on ne compte pas le 1
                 popPosition = j-1;
                 mustPopAll = 1;
                 maxHeight = 0;
             }
             else if(currentHeight > maxHeight){
+                r.x = j; r.h  = currentHeight;
                 maxHeight = currentHeight;
-                pushStack(&stack, j, currentHeight);
-                stackSize++;
+                pushStack(&stack, r);
             }
             else if(currentHeight < maxHeight){
                 mustPopAll = 1;
@@ -195,15 +193,13 @@ void solution4bis(Tiling * tiles){
             }
 
             if(mustPopAll){
-                open_rect * rect;
-                while(stackSize != 0){
-                    int x,h;
-                    readStack(stack, &x, &h);
+                open_rect rect;
+                while(!isStackEmpty(stack)){
+                    rect = readStack(stack);
                     popStack(&stack);
-                    stackSize--;
 
-                    int x0 = x, x1 = popPosition;
-                    int y0 =  i - h + 1, y1 = i;
+                    int x0 = rect.x, x1 = popPosition;
+                    int y0 =  i - rect.h + 1, y1 = i;
                     int area = (x1 - x0 + 1) * (y1 - y0 + 1);
                     if ( area > max ) {
                         max = area;
@@ -214,8 +210,9 @@ void solution4bis(Tiling * tiles){
                     }
 
                     if(stack == NULL && mustSaveLastReactangle){
-                        pushStack(&stack, x, currentHeight);
-                        stackSize++;
+                        rect.x = rect.x;
+                        rect.h = currentHeight;
+                        pushStack(&stack, rect);
                         break;
                     }
                 }
