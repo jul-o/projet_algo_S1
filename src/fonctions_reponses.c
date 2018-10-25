@@ -13,7 +13,7 @@ void solution1(Tiling* tiles) {
             for (int y1 = y0; y1 < tiles->lines; y1++) {
                 for (int x1 = x0; x1 < tiles->columns; x1++) {
                     noBlackFound = 1;
-                    // ix, iy are the current right bottom corner
+                    // ix, iy sont le coin inférieur gauche courant
                     for (int ix = x0; ix <= x1 && noBlackFound; ix++) {
                         for (int iy = y0; iy <= y1 && noBlackFound; iy++) {
                             if (tiles->values[iy][ix] == 1) noBlackFound = 0;
@@ -21,7 +21,6 @@ void solution1(Tiling* tiles) {
                     }
 
                     if (noBlackFound) {
-                        // x0 and y0 should be always bigger so no real need no use abs()
                         int area = (x1 - x0 + 1) * (y1 - y0 + 1);
                         if (area > max) {
                             max = area;
@@ -56,7 +55,7 @@ void solution2(Tiling* tiles) {
 
     for (int x0 = 0; x0 < tiles->columns; x0++) {
         for (int y0 = 0; y0 < tiles->lines; y0++) {
-            // x1, y1 : current bottom right corner position
+            // x1, y1 : coin inférieur droit courant
             int x1 = x0;
             int y1 = y0;
 

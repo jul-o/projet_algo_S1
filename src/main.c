@@ -22,6 +22,7 @@ double testSolution(void (*f)(Tiling *), int lines, int columns, int ratio){
 }
 
 int main(int argc, char** argv){
+  // testStack();
   // char * path = "ressources/case2";
   // Tiling * tiles = loadTiling(path);
   // displayTiling(tiles);
