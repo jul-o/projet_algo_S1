@@ -12,10 +12,10 @@ struct open_rect{
 typedef struct open_rect open_rect;
 
 Node * createStack();
-void pushStack(Node ** stack, open_rect r);
+void pushStack(Node ** stack, open_rect  * r);
 void popStack(Node ** stack);
 void printStack(Node * stack);
 int isStackEmpty(Node * stack);
-open_rect readStack(Node* stack);
+open_rect * readStack(Node* stack);
 
 #endif
