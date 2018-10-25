@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h> 
+#include <time.h>
 #include "functions.h"
 #include "fonctions_reponses.h"
 #include "./test/stack_test.c"
@@ -10,12 +10,12 @@
 double testSolution(void (*f)(Tiling *), int lines, int columns, int ratio){
   clock_t start, end;
   Tiling * tiling = randomTiling(lines,columns,ratio);
-  // displayTiling(tiling);
+  displayTiling(tiling);
   start = clock();
   (*f)(tiling);
   end = clock();
   double res =  ((double) (end - start)) / CLOCKS_PER_SEC;
-  
+
   printf("ELASPED TIME : %lf \n", res*1000); // * 1000 to get MS
 
   return res;
@@ -38,12 +38,11 @@ int main(int argc, char** argv){
   // testSolution(solution4, 5000, 6000, 20);
   // testSolution(solution3, 10000, 10000, 20);
 
-  testSolution(solution4bis, 500, 500, 20);
+  testSolution(solution4, 5, 5, 20);
 
 
   // For debuging purpose
-  printf("Press ENTER key to Continue\n");  
-  getchar(); 
+  printf("Press ENTER key to Continue\n");
+  getchar();
   return 0;
 }
-

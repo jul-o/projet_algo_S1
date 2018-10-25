@@ -16,6 +16,6 @@ void pushStack(Node ** stack, open_rect r);
 void popStack(Node ** stack);
 void printStack(Node * stack);
 int isStackEmpty(Node * stack);
-open_rect readStack(Node* stack);
+open_rect * readStack(Node* stack);
 
 #endif

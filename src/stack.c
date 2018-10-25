@@ -44,7 +44,7 @@ void printStack(Node * stack){
     printf("\n");
 }
 
-// TODO : ajouter préconditions 
-open_rect readStack(Node* stack){
-    return stack->v;
+// TODO : ajouter préconditions
+open_rect* readStack(Node* stack){
+    return &(stack->v);
 }
