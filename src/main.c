@@ -22,10 +22,10 @@ double testSolution(void (*f)(Tiling *), int lines, int columns, int ratio){
 }
 
 int main(int argc, char** argv){
-  // char * path = "ressources/wtf";
-  // Tiling * tiles = loadTiling(path);
-  // displayTiling(tiles);
-  // solution3(tiles);
+  char * path = "ressources/case3";
+  Tiling * tiles = loadTiling(path);
+  displayTiling(tiles);
+  solution4(tiles);
 
   // testSolution(solution4, 50, 50, 20);
   // testSolution(solution4, 100, 100, 20);
@@ -38,7 +38,7 @@ int main(int argc, char** argv){
   // testSolution(solution4, 5000, 6000, 20);
   // testSolution(solution3, 10000, 10000, 20);
 
-  testSolution(solution4, 5, 5, 20);
+  // testSolution(solution4, 5, 5, 20);
 
 
   // For debuging purpose
