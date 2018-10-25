@@ -1,8 +1,8 @@
 #include "fonctions_reponses.h"
 
 void solution1(Tiling* tiles) {
-    // x0, y0 : top left corner
-    // x1, y1 : bottom left corner
+    // x0, y0 : coin supérieur gauche
+    // x1, y1 : coin inférieur droit
     int max = 0;
     int x0_max = 0, y0_max = 0;
     int x1_max = 0, y1_max = 0;

@@ -5,6 +5,7 @@
 #include <string.h>
 #include <ctype.h>
 
+
 typedef struct tiling{
     int lines;
     int columns;
